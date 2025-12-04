@@ -9,8 +9,12 @@ def index():
 @app.route("/main",methods=["GET","POST"])
 def main():
     q=request.form.get("q")
-    print
+    print(q)
     return(render_template("main.html"))
+
+@app.route("/paynow",methods=["GET","POST"])
+def paynow():
+    return(render_template("paynow.html"))
 
 if __name__ == "__main__":
     app.run()

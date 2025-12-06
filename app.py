@@ -4,23 +4,31 @@ import datetime
 
 app=Flask(__name__)
 
+flag=1
+
 @app.route("/",methods=["GET","POST"])
 def index():
+    global flag
+    flag=1
     return (render_template("index.html"))
 
 @app.route("/main",methods=["GET","POST"])
 def main():
-    name=request.form.get("q")
 
-    timestamp=datetime.datetime.now()
+    global flag
 
-    conn=sqlite3.connect("user.db")
-    c=conn.cursor()
-    c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(name,timestamp))
-    conn.commit()
-    c.close
-    conn.close()
+    if flag==1:
+        name=request.form.get("q")
 
+        timestamp=datetime.datetime.now()
+
+        conn=sqlite3.connect("user.db")
+        c=conn.cursor()
+        c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(name,timestamp))
+        conn.commit()
+        c.close
+        conn.close()
+        flag=0
 
     return(render_template("main.html"))
 
@@ -51,7 +59,7 @@ def deleteuserlog():
     conn.commit()
     c.close
     conn.close()
-    
+
     return(render_template("deleteuserlog.html"))
 
 
